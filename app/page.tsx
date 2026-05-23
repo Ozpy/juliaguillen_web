@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Hero from "../components/home/Hero";
 import CategoriesGrid from "../components/home/CategoriesGrid";
 import FeaturedProducts from "../components/home/FeaturedProducts";
@@ -25,10 +25,14 @@ export default async function Home({ searchParams }: HomeProps) {
       <Hero />
 
       {/* Product Categories Section */}
-      <CategoriesGrid />
+      <Suspense fallback={<div className="w-full py-32 bg-pearl-white flex justify-center"><div className="w-8 h-8 rounded-full border-2 border-pearl-gray/30 border-t-pearl-deep animate-spin" /></div>}>
+        <CategoriesGrid />
+      </Suspense>
 
       {/* Featured Collection Section */}
-      <FeaturedProducts />
+      <Suspense fallback={<div className="w-full py-32 bg-white flex justify-center"><div className="w-8 h-8 rounded-full border-2 border-pearl-gray/30 border-t-pearl-deep animate-spin" /></div>}>
+        <FeaturedProducts />
+      </Suspense>
 
       {/* Brand Narrative Section */}
       <BrandStory />

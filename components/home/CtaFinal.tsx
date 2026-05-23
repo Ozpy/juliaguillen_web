@@ -8,7 +8,7 @@ import { ArrowRight } from "lucide-react";
 
 export default function CtaFinal() {
   return (
-    <section className="bg-pearl-deep py-24 md:py-36 w-full text-center relative overflow-hidden flex items-center justify-center">
+    <section className="bg-pearl-deep py-16 md:py-24 lg:py-36 w-full text-center relative overflow-hidden flex items-center justify-center">
       {/* Decorative background perla sutil texture */}
       <div className="absolute inset-0 opacity-10 bg-radial-gradient from-white/30 to-transparent pointer-events-none" />
       

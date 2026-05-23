@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Product } from "../../types";
 import { useCartStore } from "../../lib/cart-store";
 import { showToast } from "../ui/Toast";
@@ -12,6 +13,7 @@ interface ProductPurchaseSectionProps {
 }
 
 export default function ProductPurchaseSection({ product }: ProductPurchaseSectionProps) {
+  const router = useRouter();
   const [quantity, setQuantity] = useState(1);
   const addToCart = useCartStore((state) => state.add);
   const setCartOpen = useCartStore((state) => state.setIsOpen);
@@ -30,10 +32,10 @@ export default function ProductPurchaseSection({ product }: ProductPurchaseSecti
     setCartOpen(true); // Open the drawer immediately for elegant feedback
   };
 
-  // Immediate WooCommerce buy-now redirect URL
-  const getBuyNowUrl = () => {
-    const wpUrl = process.env.NEXT_PUBLIC_WP_URL || "https://wp.juliaguillen.com";
-    return `${wpUrl}/?add-to-cart=${product.id}&quantity=${quantity}`;
+  // Immediate headless buy-now redirect
+  const handleBuyNow = () => {
+    addToCart(product, quantity);
+    router.push("/checkout");
   };
 
   return (
@@ -77,16 +79,15 @@ export default function ProductPurchaseSection({ product }: ProductPurchaseSecti
         </Button>
 
         {/* Comprar ahora (Inverted Button / Direct checkout link) */}
-        <a href={getBuyNowUrl()} className="w-full focus:outline-none">
-          <Button
-            variant="inverse"
-            type="button"
-            className="w-full py-4 text-xs font-semibold tracking-[0.2em] uppercase border border-pearl-deep flex items-center justify-center gap-3 text-pearl-deep hover:bg-pearl-white/80"
-          >
-            <CreditCard className="h-4 w-4 text-pearl-deep" />
-            <span>Comprar Ahora</span>
-          </Button>
-        </a>
+        <Button
+          variant="inverse"
+          type="button"
+          onClick={handleBuyNow}
+          className="w-full py-4 text-xs font-semibold tracking-[0.2em] uppercase border border-pearl-deep flex items-center justify-center gap-3 text-pearl-deep hover:bg-pearl-white/80"
+        >
+          <CreditCard className="h-4 w-4 text-pearl-deep" />
+          <span>Comprar Ahora</span>
+        </Button>
       </div>
     </div>
   );

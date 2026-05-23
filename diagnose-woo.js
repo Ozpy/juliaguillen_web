@@ -5,11 +5,11 @@ const SECRET = "cs_478509d2b0196ea6c805ef4081a3dc02f6de456f";
 const auth = Buffer.from(`${KEY}:${SECRET}`).toString("base64");
 
 async function testConnection() {
-  console.log("--- INICIANDO DIAGNÓSTICO DE WOOCOMMERCE ---");
-  console.log(`Intentando conectar a: ${WP_URL}/wp-json/wc/v3/products`);
+  console.log("--- INICIANDO DIAGNÓSTICO DE CATEGORÍAS WOOCOMMERCE ---");
+  console.log(`Intentando conectar a: ${WP_URL}/wp-json/wc/v3/products/categories`);
   
   try {
-    const response = await fetch(`${WP_URL}/wp-json/wc/v3/products?per_page=5`, {
+    const response = await fetch(`${WP_URL}/wp-json/wc/v3/products/categories?per_page=100`, {
       headers: {
         Authorization: `Basic ${auth}`,
         "Content-Type": "application/json",
@@ -31,10 +31,9 @@ async function testConnection() {
       console.log("\n¡CONEXIÓN EXITOSA!");
       try {
         const json = JSON.parse(text);
-        console.log(`\nSe encontraron ${json.length} productos.`);
-        console.log("Primeros productos en tu WordPress:");
-        json.forEach(p => {
-          console.log(`- [ID ${p.id}]: ${p.name} ($${p.price})`);
+        console.log(`\nSe encontraron ${json.length} categorías.`);
+        json.forEach(c => {
+          console.log(`- [ID ${c.id}]: "${c.name}" | Slug: "${c.slug}" | Count: ${c.count}`);
         });
       } catch (e) {
         console.log("La respuesta no es JSON válido:", text.slice(0, 300));

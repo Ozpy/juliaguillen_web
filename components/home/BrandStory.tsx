@@ -17,26 +17,26 @@ export default function BrandStory() {
   const y = useTransform(scrollYProgress, [0, 1], ["-5%", "5%"]);
 
   return (
-    <section ref={containerRef} className="bg-pearl-cream py-24 md:py-40 w-full overflow-hidden relative">
+    <section ref={containerRef} className="bg-pearl-cream py-12 md:py-24 lg:py-40 w-full overflow-hidden relative" style={{ position: "relative" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
-          
+
           {/* Column 1: Editorial Image (Lg spans 7 cols) */}
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-7 relative bg-pearl-white overflow-hidden shadow-2xl z-10 w-full"
-            style={{ 
+            className="lg:col-span-7 relative bg-pearl-white/20 overflow-hidden shadow-2xl z-10 w-full"
+            style={{
               aspectRatio: "3/4",
               // We constrain the height on desktop so it doesn't get too massive
-              maxHeight: "80vh" 
+              maxHeight: "80vh"
             }}
           >
             <motion.div style={{ y }} className="absolute inset-0 w-full h-[110%] -top-[5%]">
               <Image
-                src="/images/home-hero.jpg"
+                src="/images/perlas-history.png"
                 alt="Joyería de perlas finas Julia Guillén hechas a mano"
                 fill
                 sizes="(max-width: 1024px) 100vw, 55vw"
@@ -58,7 +58,7 @@ export default function BrandStory() {
               Nuestra esencia
             </span>
             <h2 className="text-display-2 text-pearl-ink mb-8 italic font-medium leading-[1.15]">
-              Las perlas no son <br/><span className="not-italic">para viejitas</span>
+              Las perlas no son <br /><span className="not-italic">para viejitas</span>
             </h2>
 
             {/* Paragraph */}
@@ -76,7 +76,7 @@ export default function BrandStory() {
 
         </div>
       </div>
-      
+
       {/* Decorative large text behind everything */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none select-none opacity-[0.03] overflow-hidden mix-blend-color-burn z-0">
         <span className="font-display italic text-[20vw] leading-none whitespace-nowrap">

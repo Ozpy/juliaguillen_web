@@ -5,6 +5,7 @@ import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import CartDrawer from "../components/layout/CartDrawer";
 import ToastContainer from "../components/ui/Toast";
+import ShopPreloader from "../components/layout/ShopPreloader";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -60,6 +61,7 @@ export default function RootLayout({
         <Footer />
         <CartDrawer />
         <ToastContainer />
+        <ShopPreloader />
       </body>
     </html>
   );

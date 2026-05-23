@@ -49,13 +49,9 @@ export default function CartDrawer() {
     return acc + price * item.quantity;
   }, 0);
 
-  // Generate the special WooCommerce add-to-cart redirect URL
+  // Generate the local checkout URL
   const getCheckoutUrl = () => {
-    if (items.length === 0) return "#";
-    const wpUrl = process.env.NEXT_PUBLIC_WP_URL || "https://wp.juliaguillen.com";
-    const productIds = items.map((item) => item.id).join(",");
-    const quantities = items.map((item) => item.quantity).join(",");
-    return `${wpUrl}/?add-to-cart=${productIds}&quantity=${quantities}`;
+    return "/checkout";
   };
 
   return (
@@ -213,15 +209,16 @@ export default function CartDrawer() {
                   Los envíos, impuestos y descuentos se calculan durante el checkout en wp.juliaguillen.com.
                 </p>
 
-                <a 
+                <Link 
                   href={getCheckoutUrl()} 
+                  onClick={() => setIsOpen(false)}
                   className="w-full inline-block mt-2 focus:outline-none"
                 >
                   <Button variant="primary" className="w-full py-4 text-xs tracking-[0.2em] font-medium flex items-center justify-center gap-2 group">
                     <span>Proceder al Pago</span>
                     <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
                   </Button>
-                </a>
+                </Link>
 
                 <button
                   onClick={() => setIsOpen(false)}

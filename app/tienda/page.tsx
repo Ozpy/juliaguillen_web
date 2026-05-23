@@ -1,5 +1,4 @@
 import React, { Suspense } from "react";
-import { getProducts, getCategories } from "../../lib/woo";
 import CatalogView from "../../components/product/CatalogView";
 import type { Metadata } from "next";
 
@@ -8,13 +7,9 @@ export const metadata: Metadata = {
   description: "Explora nuestra colección completa de joyería fina hecha a mano. Aretes, collares de perlas, pulseras y conjuntos únicos creados en México.",
 };
 
-export default async function TiendaPage() {
-  // Fetch products and categories in parallel server-side
-  const [products, categories] = await Promise.all([
-    getProducts(),
-    getCategories()
-  ]);
+export const dynamic = "force-dynamic";
 
+export default function TiendaPage() {
   return (
     <div className="bg-pearl-white min-h-screen py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -31,15 +26,16 @@ export default async function TiendaPage() {
           </p>
         </div>
 
-        {/* Suspense boundary for search params / client filtering */}
+        {/* Suspense boundary for client filtering */}
         <Suspense fallback={
-          <div className="w-full py-24 text-center">
+          <div className="w-full py-32 flex flex-col items-center justify-center gap-4">
+            <div className="w-8 h-8 rounded-full border-2 border-pearl-gray/30 border-t-pearl-deep animate-spin" />
             <span className="font-sans text-xs uppercase tracking-widest text-pearl-gray animate-pulse">
-              Cargando colección...
+              Cargando catálogo...
             </span>
           </div>
         }>
-          <CatalogView initialProducts={products} categories={categories} />
+          <CatalogView initialProducts={[]} categories={[]} />
         </Suspense>
       </div>
     </div>

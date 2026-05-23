@@ -29,7 +29,7 @@ export default function HistoriaPage() {
           </div>
           <div className="relative aspect-video lg:aspect-[4/3] bg-pearl-white border border-pearl-gray/10 overflow-hidden shadow-sm">
             <Image
-              src="https://placehold.co/1200x800/EDF2F5/909FAD?text=Fundacion+Lupita+Guillen"
+              src="/images/hero-history.png"
               alt="Lupita Guillén diseñando joyería fina de perlas"
               fill
               sizes="(max-width: 1024px) 100vw, 45vw"
@@ -41,11 +41,11 @@ export default function HistoriaPage() {
       </section>
 
       {/* 2. Bloque de origen — El cuento de Lupita */}
-      <section className="bg-pearl-cream py-20 md:py-32 border-b border-pearl-gray/10">
+      <section className="bg-pearl-cream py-12 md:py-24 lg:py-32 border-b border-pearl-gray/10">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="relative aspect-square max-w-md mx-auto w-full bg-pearl-white border border-pearl-gray/10 overflow-hidden order-last lg:order-first">
             <Image
-              src="https://placehold.co/800x800/EDF2F5/857B76?text=Primeros+Disenos"
+              src="/images/origen-history.png"
               alt="Primeros diseños de collares de perlas modernizados"
               fill
               sizes="(max-width: 1024px) 100vw, 35vw"
@@ -70,7 +70,7 @@ export default function HistoriaPage() {
       </section>
 
       {/* 3. Bloque de hijas/modelos — Susi como modelo */}
-      <section className="bg-white py-20 md:py-32 border-b border-pearl-gray/10">
+      <section className="bg-white py-12 md:py-24 lg:py-32 border-b border-pearl-gray/10">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="max-w-lg">
             <span className="font-eyebrow text-pearl-gray mb-3 inline-block">
@@ -86,24 +86,44 @@ export default function HistoriaPage() {
               La vestíamos con ropa sumamente simple (camisetas básicas de algodón blanco, mezclilla cruda) con el fin de que lo único que destacara fuera la joyería. Esa naturalidad sin poses rompió de golpe la idea de que las perlas exigen vestidos solemnes de etiqueta. Se convirtieron en el complemento de la vida real.
             </p>
           </div>
-          <div className="relative aspect-[3/4] max-w-sm mx-auto w-full bg-pearl-white border border-pearl-gray/10 overflow-hidden">
-            <Image
-              src="https://placehold.co/900x1200/EDF2F5/909FAD?text=Susi+Modelando"
-              alt="Susi modelando joyería fina de perlas con ropa simple"
-              fill
-              sizes="(max-width: 1024px) 100vw, 30vw"
-              className="object-cover"
-            />
+          <div className="grid grid-cols-3 gap-4 items-center pt-8 lg:pt-0 max-w-xl mx-auto w-full">
+            <div className="relative aspect-[3/4] w-full bg-pearl-white border border-pearl-gray/10 overflow-hidden shadow-md transform hover:-translate-y-2 transition-transform duration-500 rounded-sm">
+              <Image
+                src="/images/aretes-history.png"
+                alt="Aretes en modelo Susi"
+                fill
+                sizes="(max-width: 1024px) 33vw, 15vw"
+                className="object-cover"
+              />
+            </div>
+            <div className="relative aspect-[3/4] w-full bg-pearl-white border border-pearl-gray/10 overflow-hidden shadow-lg transform -translate-y-4 hover:-translate-y-6 transition-transform duration-500 rounded-sm border-pearl-deep/20">
+              <Image
+                src="/images/perlas-history.png"
+                alt="Collar de perlas en modelo Susi"
+                fill
+                sizes="(max-width: 1024px) 33vw, 15vw"
+                className="object-cover"
+              />
+            </div>
+            <div className="relative aspect-[3/4] w-full bg-pearl-white border border-pearl-gray/10 overflow-hidden shadow-md transform translate-y-4 hover:translate-y-2 transition-transform duration-500 rounded-sm">
+              <Image
+                src="/images/pulseras-history.png"
+                alt="Pulseras en modelo Susi"
+                fill
+                sizes="(max-width: 1024px) 33vw, 15vw"
+                className="object-cover"
+              />
+            </div>
           </div>
         </div>
       </section>
 
       {/* 4. Bloque de proceso — Hecho a mano */}
-      <section className="bg-pearl-cream py-20 md:py-32 border-b border-pearl-gray/10">
+      <section className="bg-pearl-cream py-12 md:py-24 lg:py-32 border-b border-pearl-gray/10">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="relative aspect-square max-w-md mx-auto w-full bg-pearl-white border border-pearl-gray/10 overflow-hidden order-last lg:order-first">
             <Image
-              src="https://placehold.co/800x800/EDF2F5/857B76?text=Proceso+Artesanal"
+              src="/images/hechasamano-history.png"
               alt="Manos artesanas enhebrando collar de perlas de río"
               fill
               sizes="(max-width: 1024px) 100vw, 35vw"
@@ -128,7 +148,7 @@ export default function HistoriaPage() {
       </section>
 
       {/* 5. Cierre / CTA */}
-      <section className="bg-white py-24 text-center">
+      <section className="bg-white py-16 md:py-24 text-center">
         <div className="max-w-xl mx-auto px-6">
           <span className="font-eyebrow text-pearl-gray mb-3 inline-block">
             El Catálogo

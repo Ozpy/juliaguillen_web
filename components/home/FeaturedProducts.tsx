@@ -14,7 +14,7 @@ export default async function FeaturedProducts() {
   }
 
   return (
-    <section className="bg-white py-20 md:py-32 border-y border-pearl-gray/10 w-full overflow-hidden">
+    <section className="bg-white py-12 md:py-24 lg:py-32 border-y border-pearl-gray/10 w-full overflow-hidden">
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
         
         {/* Header - Editorial Style */}

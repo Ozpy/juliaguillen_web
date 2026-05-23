@@ -37,7 +37,7 @@ export default function Guarantees() {
   };
 
   return (
-    <section className="bg-white py-16 md:py-24 border-b border-pearl-gray/10 w-full">
+    <section className="bg-white py-12 md:py-20 lg:py-24 border-b border-pearl-gray/10 w-full">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <motion.div 
           variants={containerVariants}

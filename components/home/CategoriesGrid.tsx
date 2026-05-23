@@ -13,12 +13,12 @@ export default async function CategoriesGrid() {
   }
 
   return (
-    <section className="bg-pearl-white py-20 md:py-32 w-full border-b border-pearl-gray/10 overflow-hidden relative">
+    <section className="bg-pearl-white py-12 md:py-24 lg:py-32 w-full border-b border-pearl-gray/10 overflow-hidden relative">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-16 gap-6">
           <div className="max-w-lg text-left">
-            <span className="font-eyebrow text-pearl-deep mb-4 inline-block">
+            <span className="font-eyebrow text-pearl-deep mb-2 md:mb-4 inline-block">
               Colecciones
             </span>
             <h2 className="text-display-1 text-pearl-ink italic">
@@ -33,7 +33,7 @@ export default async function CategoriesGrid() {
         </div>
 
         {/* Categories Grid (Staggered Bento Layout) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-8 auto-rows-[350px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-8 auto-rows-[250px] md:auto-rows-[350px]">
           {categories.map((category, index) => {
             const categoryImage = category.image?.src || `https://placehold.co/800x800/EDF2F5/909FAD?text=${encodeURIComponent(category.name)}`;
             

@@ -7,20 +7,56 @@ import ProductCard from "./ProductCard";
 import { Search, SlidersHorizontal, ChevronDown, X } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import { useShopStore } from "../../lib/shop-store";
 
 interface CatalogViewProps {
   initialProducts: Product[];
   categories: WooCategory[];
+  initialCategorySlug?: string;
 }
 
 type SortOption = "recent" | "price-asc" | "price-desc";
 
-export default function CatalogView({ initialProducts, categories }: CatalogViewProps) {
+export default function CatalogView({ initialProducts, categories, initialCategorySlug }: CatalogViewProps) {
   const searchParams = useSearchParams();
+
+  const cachedProducts = useShopStore((state) => state.products);
+  const cachedCategories = useShopStore((state) => state.categories);
+  const isLoaded = useShopStore((state) => state.isLoaded);
+  const isLoading = useShopStore((state) => state.isLoading);
+  const setShopData = useShopStore((state) => state.setShopData);
+  const setLoading = useShopStore((state) => state.setLoading);
+
+  const productsToUse = isLoaded && cachedProducts.length > 0 ? cachedProducts : initialProducts;
+  const categoriesToUse = isLoaded && cachedCategories.length > 0 ? cachedCategories : categories;
+
+  // Background fetch SWR revalidation
+  useEffect(() => {
+    const fetchShopData = async () => {
+      if (!isLoaded) {
+        setLoading(true);
+      }
+      try {
+        const response = await fetch("/api/shop-data");
+        if (!response.ok) throw new Error("Failed to fetch shop data");
+        const data = await response.json();
+        
+        if (data.products && data.categories) {
+          setShopData(data.products, data.categories);
+        }
+      } catch (error) {
+        console.warn("CatalogView SWR background fetch failed:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchShopData();
+  }, [isLoaded, setShopData, setLoading]);
   
   // States for search and filters
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedCategory, setSelectedCategory] = useState<string>(initialCategorySlug || "all");
   const [selectedMaterial, setSelectedMaterial] = useState<string>("all");
   const [selectedPriceRange, setSelectedPriceRange] = useState<string>("all");
   const [sortBy, setSortBy] = useState<SortOption>("recent");
@@ -37,8 +73,10 @@ export default function CatalogView({ initialProducts, categories }: CatalogView
     const cat = searchParams.get("categoria");
     if (cat) {
       setSelectedCategory(cat);
+    } else if (initialCategorySlug) {
+      setSelectedCategory(initialCategorySlug);
     }
-  }, [searchParams]);
+  }, [searchParams, initialCategorySlug]);
 
   // Handle URL filters when category is updated
   const handleCategorySelect = (catSlug: string) => {
@@ -46,6 +84,13 @@ export default function CatalogView({ initialProducts, categories }: CatalogView
     // Safely update history URL
     if (typeof window !== "undefined") {
       const url = new URL(window.location.href);
+      
+      // If we are on a specific category sub-route, redirect to the main shop page
+      if (url.pathname.includes("/categoria/")) {
+        window.location.href = catSlug === "all" ? "/tienda" : `/tienda?categoria=${catSlug}`;
+        return;
+      }
+
       if (catSlug === "all") {
         url.searchParams.delete("categoria");
       } else {
@@ -72,7 +117,7 @@ export default function CatalogView({ initialProducts, categories }: CatalogView
 
   // Filtering & Sorting core logic
   const filteredProducts = useMemo(() => {
-    let result = [...initialProducts];
+    let result = [...productsToUse];
 
     // 1. Text Search Filter
     if (searchQuery.trim() !== "") {
@@ -124,7 +169,7 @@ export default function CatalogView({ initialProducts, categories }: CatalogView
     }
 
     return result;
-  }, [initialProducts, searchQuery, selectedCategory, selectedMaterial, selectedPriceRange, sortBy]);
+  }, [productsToUse, searchQuery, selectedCategory, selectedMaterial, selectedPriceRange, sortBy]);
 
   const clearAllFilters = () => {
     setSearchQuery("");
@@ -146,7 +191,7 @@ export default function CatalogView({ initialProducts, categories }: CatalogView
     (selectedPriceRange !== "all" ? 1 : 0) +
     (searchQuery !== "" ? 1 : 0);
 
-  if (initialProducts.length === 0) {
+  if (productsToUse.length === 0 && !isLoading) {
     return (
       <div className="w-full py-24 px-6 text-center border border-pearl-gray/10 bg-white max-w-xl mx-auto flex flex-col items-center gap-5 shadow-xs">
         <span className="font-eyebrow text-pearl-gray">Colección Exclusiva</span>
@@ -160,8 +205,25 @@ export default function CatalogView({ initialProducts, categories }: CatalogView
     );
   }
 
+  const currentCategory = categoriesToUse.find((c) => c.slug === initialCategorySlug);
+
   return (
     <div className="w-full">
+      {initialCategorySlug && (
+        <div className="text-left mb-12 md:mb-16">
+          <span className="font-eyebrow text-pearl-gray mb-3 inline-block">
+            Colección / Categoría
+          </span>
+          <h1 className="text-display-1 text-pearl-ink mb-4 capitalize">
+            {currentCategory ? currentCategory.name : initialCategorySlug.replace(/-/g, " ")}
+          </h1>
+          {currentCategory?.description && (
+            <p className="text-sm text-pearl-brown max-w-xl leading-relaxed">
+              {currentCategory.description}
+            </p>
+          )}
+        </div>
+      )}
       {/* Search and Quick Filters bar */}
       <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 border-b border-pearl-gray/20 pb-6 mb-8">
         {/* Text Search Input */}
@@ -246,7 +308,7 @@ export default function CatalogView({ initialProducts, categories }: CatalogView
               >
                 Todas las piezas
               </button>
-              {categories.map((cat) => (
+              {categoriesToUse.map((cat) => (
                 <button
                   key={cat.id}
                   onClick={() => handleCategorySelect(cat.slug)}
@@ -306,7 +368,23 @@ export default function CatalogView({ initialProducts, categories }: CatalogView
 
         {/* Products Grid Content */}
         <div className="flex-grow">
-          {filteredProducts.length === 0 ? (
+          {isLoading && productsToUse.length === 0 ? (
+            <div>
+              <p className="text-left font-sans text-xs text-pearl-gray tracking-wider mb-6 animate-pulse">
+                Buscando colecciones...
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-12 sm:gap-x-8 sm:gap-y-16">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="flex flex-col gap-4 animate-pulse">
+                    <div className="aspect-square w-full bg-pearl-cream/20 border border-pearl-gray/5 mb-4" />
+                    <div className="h-3 bg-pearl-cream/25 w-1/4 rounded-sm" />
+                    <div className="h-4 bg-pearl-cream/20 w-3/4 rounded-sm" />
+                    <div className="h-3.5 bg-pearl-cream/25 w-1/3 rounded-sm" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : filteredProducts.length === 0 ? (
             <div className="py-24 text-center border border-pearl-gray/10 bg-white">
               <p className="text-base text-pearl-brown font-sans mb-4">
                 No encontramos piezas que coincidan con tu búsqueda.
@@ -377,7 +455,7 @@ export default function CatalogView({ initialProducts, categories }: CatalogView
                     >
                       Todas
                     </button>
-                    {categories.map((cat) => (
+                    {categoriesToUse.map((cat) => (
                       <button
                         key={cat.id}
                         onClick={() => handleCategorySelect(cat.slug)}

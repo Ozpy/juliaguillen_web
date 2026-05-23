@@ -8,6 +8,8 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Product } from "../../../types";
 
+export const dynamic = "force-dynamic";
+
 type ProductPageProps = {
   params: Promise<{ slug: string }>;
 };
@@ -49,16 +51,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
-  // Fetch related products (same category)
   const categoryId = product.categories[0]?.id;
-  let relatedProducts: Product[] = [];
-  if (categoryId) {
-    const fetchedRelated = await getProductsByCategory(categoryId);
-    // Filter out the current product itself
-    relatedProducts = fetchedRelated
-      .filter((p) => p.id !== product.id)
-      .slice(0, 4); // Limit to top 4 related products
-  }
 
   // Build accordion contents
   const accordionItems = [
@@ -154,19 +147,54 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
         </div>
 
-        {/* Related Products Section */}
-        {relatedProducts.length > 0 && (
-          <div className="pt-20 text-left">
-            <h2 className="font-display text-2xl text-pearl-ink mb-10">
-              También te puede gustar
-            </h2>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-              {relatedProducts.map((relatedProd) => (
-                <ProductCard key={relatedProd.id} product={relatedProd} />
-              ))}
+        {/* Asynchronously Stream Related Products to eliminate sequential roundtrips block */}
+        {categoryId && (
+          <Suspense fallback={
+            <div className="pt-20 text-left animate-pulse">
+              <h2 className="font-display text-2xl text-pearl-ink mb-10">
+                También te puede gustar
+              </h2>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="flex flex-col gap-4">
+                    <div className="aspect-square w-full bg-pearl-gray/10 border border-pearl-gray/5" />
+                    <div className="h-4 bg-pearl-gray/10 w-2/3" />
+                    <div className="h-4 bg-pearl-gray/10 w-1/3" />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          }>
+            <RelatedProductsList categoryId={categoryId} currentProductId={product.id} />
+          </Suspense>
         )}
+      </div>
+    </div>
+  );
+}
+
+// Separate Async Server Component for streaming related products
+async function RelatedProductsList({ categoryId, currentProductId }: { categoryId: number; currentProductId: number }) {
+  const fetchedRelated = await getProductsByCategory(categoryId);
+  
+  // Filter out the current product itself
+  const relatedProducts = fetchedRelated
+    .filter((p) => p.id !== currentProductId)
+    .slice(0, 4); // Limit to top 4 related products
+
+  if (relatedProducts.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="pt-20 text-left">
+      <h2 className="font-display text-2xl text-pearl-ink mb-10">
+        También te puede gustar
+      </h2>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+        {relatedProducts.map((relatedProd) => (
+          <ProductCard key={relatedProd.id} product={relatedProd} />
+        ))}
       </div>
     </div>
   );
