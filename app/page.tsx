@@ -28,7 +28,6 @@ export default async function Home({ searchParams }: HomeProps) {
       <CategoriesGrid />
 
       {/* Featured Collection Section */}
-      {/* @ts-expect-error Server Component */}
       <FeaturedProducts />
 
       {/* Brand Narrative Section */}
