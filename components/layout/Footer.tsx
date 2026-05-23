@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -11,12 +12,13 @@ export default function Footer() {
           {/* Column 1: Brand / Story */}
           <div className="flex flex-col gap-4">
             <Link href="/" className="inline-block focus:outline-none">
-              <span className="font-display text-lg tracking-[0.15em] font-medium text-pearl-ink uppercase">
-                Julia Guillén
-              </span>
-              <span className="block font-sans text-[7px] tracking-[0.4em] text-pearl-gray uppercase -mt-1 font-medium pl-1">
-                Joyería Fina
-              </span>
+              <Image
+                src="/images/logo.png"
+                alt="Julia Guillén Joyería Fina"
+                width={140}
+                height={40}
+                className="h-8 w-auto object-contain brightness-90"
+              />
             </Link>
             <p className="text-sm leading-[1.7] text-pearl-brown max-w-sm mt-2">
               Modernizamos lo clásico. Creemos en el valor de las perlas como el ADN de nuestra marca, diseñando piezas contemporáneas y sofisticadas hechas a mano en México.

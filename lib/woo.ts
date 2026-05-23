@@ -25,7 +25,9 @@ async function wooFetch<T>(path: string): Promise<T> {
       Authorization: auth,
       "Content-Type": "application/json",
     },
-    next: { revalidate: 300 }, // ISR: 5 minutes revalidation
+    next: { 
+      revalidate: process.env.NODE_ENV === "development" ? 0 : 60 
+    },
   });
 
   if (!res.ok) {

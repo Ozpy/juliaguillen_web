@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { ShoppingBag, Search, Menu, X } from "lucide-react";
 import { useCartStore } from "../../lib/cart-store";
@@ -85,14 +86,15 @@ export default function Header() {
 
         {/* Centered Brand Logo */}
         <div className="flex justify-center flex-1 md:flex-initial">
-          <Link href="/" className="inline-block text-center focus:outline-none">
-            {/* TODO: Reemplazar con imagen real del logo registrado en negro cuando esté disponible */}
-            <span className="font-display text-xl sm:text-2xl tracking-[0.15em] font-medium text-pearl-ink uppercase">
-              Julia Guillén
-            </span>
-            <span className="block font-sans text-[8px] tracking-[0.4em] text-pearl-gray uppercase -mt-1 font-medium pl-1">
-              Joyería Fina
-            </span>
+          <Link href="/" className="inline-block text-center focus:outline-none py-1">
+            <Image
+              src="/images/logo.png"
+              alt="Julia Guillén Joyería Fina"
+              width={160}
+              height={45}
+              className="h-9 sm:h-11 w-auto object-contain brightness-95"
+              priority
+            />
           </Link>
         </div>
 
