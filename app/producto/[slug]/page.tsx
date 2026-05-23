@@ -6,6 +6,7 @@ import Accordion from "../../../components/ui/Accordion";
 import ProductCard from "../../../components/product/ProductCard";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { Product } from "../../../types";
 
 type ProductPageProps = {
   params: Promise<{ slug: string }>;
@@ -50,7 +51,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   // Fetch related products (same category)
   const categoryId = product.categories[0]?.id;
-  let relatedProducts = [];
+  let relatedProducts: Product[] = [];
   if (categoryId) {
     const fetchedRelated = await getProductsByCategory(categoryId);
     // Filter out the current product itself
