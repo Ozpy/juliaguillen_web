@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Explora nuestra colección completa de joyería fina hecha a mano. Aretes, collares de perlas, pulseras y conjuntos únicos creados en México.",
 };
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export default function TiendaPage() {
   return (

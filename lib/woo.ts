@@ -9,6 +9,11 @@ const SECRET = process.env.WC_SECRET || "";
 const serverCache = new Map<string, { data: any; expiresAt: number }>();
 const CACHE_EXPIRY_MS = 3 * 60 * 1000; // 3 minutes cache
 
+export function clearServerCache() {
+  serverCache.clear();
+  console.log("WooCommerce API local memory cache cleared successfully.");
+}
+
 // Generate basic auth token safely on server-side
 const getAuthHeader = () => {
   if (!KEY || !SECRET) return "";
@@ -38,7 +43,7 @@ async function wooFetch<T>(path: string): Promise<T> {
       "User-Agent": "Mozilla/5.0 (NextJS Headless Client)"
     },
     next: { 
-      revalidate: process.env.NODE_ENV === "development" ? 0 : 60 
+      revalidate: process.env.NODE_ENV === "development" ? 0 : 3600 
     },
   });
 

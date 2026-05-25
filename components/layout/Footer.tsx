@@ -46,6 +46,9 @@ export default function Footer() {
               <Link href="/historia" className="text-sm text-pearl-brown hover:text-pearl-deep transition-colors">
                 Nuestra historia
               </Link>
+              <Link href="/seguimiento" className="text-sm text-pearl-deep hover:text-pearl-deep-hover font-medium transition-colors">
+                Rastrear mi pedido ➔
+              </Link>
             </nav>
           </div>
 

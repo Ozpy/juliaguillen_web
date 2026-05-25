@@ -168,7 +168,10 @@ export default function CatalogView({ initialProducts, categories, initialCatego
       result.sort((a, b) => b.id - a.id);
     }
 
-    return result;
+    // Ensure unique products by ID to avoid React duplicate key warnings in dynamic lists
+    const uniqueMap = new Map<number, Product>();
+    result.forEach(p => uniqueMap.set(p.id, p));
+    return Array.from(uniqueMap.values());
   }, [productsToUse, searchQuery, selectedCategory, selectedMaterial, selectedPriceRange, sortBy]);
 
   const clearAllFilters = () => {

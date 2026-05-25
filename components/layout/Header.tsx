@@ -42,6 +42,7 @@ export default function Header() {
     { name: "Tienda", href: "/tienda" },
     { name: "Nuestra Historia", href: "/historia" },
     { name: "Contacto", href: "/contacto" },
+    { name: "Rastrear", href: "/seguimiento" },
   ];
 
   return (

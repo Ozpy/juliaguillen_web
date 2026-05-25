@@ -8,7 +8,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Product } from "../../../types";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 type ProductPageProps = {
   params: Promise<{ slug: string }>;
